@@ -1,0 +1,151 @@
+/* STREAMING_CHUNK:Configuring typography classes and font families /
+/ Tipografías personalizadas importadas desde Google Fonts */
+.font-cursive {
+font-family: 'Great Vibes', cursive;
+}
+
+.font-handwriting {
+font-family: 'Dancing Script', cursive;
+}
+
+.font-serif-title {
+font-family: 'Playfair Display', serif;
+}
+
+.font-body {
+font-family: 'Montserrat', sans-serif;
+}
+
+/* STREAMING_CHUNK:Styling background and envelope container /
+/ Fondo cósmico profundo */
+.cosmic-bg {
+background: radial-gradient(circle at 50% 50%, #0d0f1e 0%, #070812 65%, #020206 100%);
+}
+
+/* Realismo y sombras del sobre kraft */
+.envelope-box {
+background: linear-gradient(135deg, #dfc69f 0%, #ecd4b2 35%, #e1c8a2 70%, #caa779 100%);
+box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9),
+0 0 35px rgba(234, 179, 8, 0.15),
+inset 0 0 25px rgba(120, 80, 40, 0.2);
+transition: transform 0.3s ease;
+}
+
+/* Solapa superior del sobre con pliegue 3D */
+.envelope-top-flap {
+transform-origin: top center;
+transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* STREAMING_CHUNK:Designing 3D wax seal button and hover states /
+/ Contenedor del sello de lacre rojo centrado */
+.wax-seal-container {
+cursor: pointer !important;
+pointer-events: auto !important;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 99999 !important;
+}
+
+/* Botón del sello de cera con relieves y texturas */
+.wax-seal-btn {
+width: 76px;
+height: 76px;
+border-radius: 9999px;
+background: radial-gradient(circle at 35% 30%, #e11d48 0%, #be123c 45%, #881337 80%, #4c0519 100%);
+box-shadow: 0 12px 26px rgba(0, 0, 0, 0.85),
+0 0 25px rgba(225, 29, 72, 0.55),
+inset 0 3px 6px rgba(255, 200, 200, 0.7),
+inset 0 -4px 8px rgba(0, 0, 0, 0.85);
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+cursor: pointer !important;
+outline: none;
+border: none;
+}
+
+.wax-seal-btn:hover {
+transform: scale(1.08);
+box-shadow: 0 16px 32px rgba(225, 29, 72, 0.7),
+0 0 35px rgba(244, 63, 94, 0.75),
+inset 0 4px 8px rgba(255, 220, 220, 0.85),
+inset 0 -4px 8px rgba(0, 0, 0, 0.85);
+}
+
+.wax-seal-btn:active {
+transform: scale(0.94);
+}
+
+/* STREAMING_CHUNK:Defining keyframe animations for seal glow and sway /
+/ Animación de latido y pulso luminoso del corazón de cera */
+@keyframes waxHeartGlow {
+0%, 100% {
+box-shadow: 0 12px 26px rgba(0,0,0,0.85), 0 0 20px rgba(225, 29, 72, 0.45);
+}
+50% {
+box-shadow: 0 14px 32px rgba(0,0,0,0.9), 0 0 36px rgba(244, 63, 94, 0.8);
+}
+}
+
+.wax-seal-pulse {
+animation: waxHeartGlow 2.2s ease-in-out infinite;
+}
+
+/* Animación pendular suave para el ramo de girasoles */
+@keyframes swayMotion {
+0%, 100% {
+transform: translateY(0px) rotate(0deg);
+}
+50% {
+transform: translateY(-7px) rotate(1.8deg);
+}
+}
+
+.animate-sway {
+animation: swayMotion 5s ease-in-out infinite;
+}
+
+/* STREAMING_CHUNK:Adding text glow effects and 3D parchment perspective /
+/ Destello dorado para el título principal */
+@keyframes titleGlow {
+0%, 100% {
+text-shadow: 0 0 12px rgba(254, 240, 138, 0.55), 0 0 24px rgba(234, 179, 8, 0.35);
+}
+50% {
+text-shadow: 0 0 28px rgba(254, 240, 138, 0.95), 0 0 50px rgba(250, 204, 21, 0.75);
+}
+}
+
+.gold-glow {
+animation: titleGlow 3.5s ease-in-out infinite;
+}
+
+/* Perspectiva y textura de pergamino antiguo en 3D */
+.card-perspective {
+perspective: 1200px;
+}
+
+.parchment-sheet {
+transform-style: preserve-3d;
+background: radial-gradient(circle at 50% 12%, #fffdf6 0%, #fef7dc 55%, #f6e6bd 100%);
+box-shadow: 0 35px 95px -15px rgba(0, 0, 0, 0.95),
+0 0 55px rgba(234, 179, 8, 0.35),
+inset 0 0 40px rgba(180, 120, 50, 0.15);
+transition: transform 0.12s ease-out;
+}
+
+/* Ocultar barras de desplazamiento para una experiencia inmersiva limpia */
+body::-webkit-scrollbar {
+display: none;
+}
+
+body {
+-ms-overflow-style: none;
+scrollbar-width: none;
+}

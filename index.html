@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para el Amor de Mi Vida 🌻 Flores Amarillas</title>
+
+    <!-- Frameworks y Librerías CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Hoja de estilos externa -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="font-body min-h-screen cosmic-bg text-slate-100 overflow-hidden relative select-none">
+
+    <!-- Lienzo WebGL 3D (Three.js): Fondo estelar y universo de girasoles -->
+    <div id="webgl-container" class="fixed inset-0 z-0 pointer-events-none"></div>
+
+    <!-- Lienzo 2D para ráfagas de pétalos dorados al interactuar -->
+    <canvas id="burstCanvas" class="fixed inset-0 z-10 pointer-events-none"></canvas>
+
+    <!-- Barra de Navegación Superior -->
+    <header class="fixed top-0 left-0 right-0 z-40 px-4 py-3 sm:px-8 sm:py-5 flex justify-between items-center bg-black/30 backdrop-blur-sm pointer-events-auto">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-300 text-xs font-semibold tracking-widest uppercase shadow-sm">
+            <span>🌻 21 de Septiembre</span>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+            <!-- Botón de Música -->
+            <button id="musicBtn" type="button" onclick="window.toggleMusica(event)" class="flex items-center gap-2 bg-slate-900/85 hover:bg-slate-800 active:scale-95 px-3.5 py-2 rounded-full border border-yellow-400/40 text-yellow-300 text-xs sm:text-sm shadow-lg transition cursor-pointer">
+                <svg id="musicSvg" class="w-4 h-4 text-yellow-400 animate-spin" style="animation-duration: 4s; animation-play-state: paused;" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+                <span id="musicLabel" class="font-semibold uppercase tracking-wider text-[11px] sm:text-xs">Música: Silencio</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- SECCIÓN DEL SOBRE CERRADO Y RAMO DE GIRASOLES -->
+    <div id="envelopeSection" class="fixed inset-0 z-30 flex flex-col items-center justify-center p-4 transition-all duration-700 ease-in-out pointer-events-auto">
+        
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-6 sm:gap-10 lg:gap-14 max-w-5xl w-full">
+            
+            <!-- Ramo de Girasoles Botánicos a la Izquierda -->
+            <div class="order-2 lg:order-1 flex items-center justify-center animate-sway pointer-events-none select-none">
+                <div class="w-44 sm:w-56 md:w-64 lg:w-72 max-w-full">
+                    <svg viewBox="0 0 300 360" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto filter drop-shadow-[0_12px_26px_rgba(234,179,8,0.35)]">
+                        <defs>
+                            <radialGradient id="bSunPetal1" cx="30%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#fff9c4"/>
+                                <stop offset="50%" stop-color="#facc15"/>
+                                <stop offset="100%" stop-color="#d97706"/>
+                            </radialGradient>
+                            <radialGradient id="bSunPetal2" cx="30%" cy="30%" r="70%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="60%" stop-color="#eab308"/>
+                                <stop offset="100%" stop-color="#b45309"/>
+                            </radialGradient>
+                            <radialGradient id="bSunCore" cx="38%" cy="38%" r="62%">
+                                <stop offset="0%" stop-color="#54250c"/>
+                                <stop offset="65%" stop-color="#3b1704"/>
+                                <stop offset="100%" stop-color="#190702"/>
+                            </radialGradient>
+                            <linearGradient id="bStemGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#22c55e"/>
+                                <stop offset="100%" stop-color="#14532d"/>
+                            </linearGradient>
+                            <linearGradient id="bRibbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="50%" stop-color="#eab308"/>
+                                <stop offset="100%" stop-color="#a16207"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Tallos -->
+                        <g stroke="url(#bStemGrad)" stroke-linecap="round">
+                            <path d="M140 220 Q144 280 148 335" stroke-width="8"/>
+                            <path d="M152 220 Q150 275 142 335" stroke-width="7"/>
+                            <path d="M165 220 Q160 275 158 335" stroke-width="7.5"/>
+                            <path d="M130 220 Q138 275 136 335" stroke-width="6"/>
+                        </g>
+
+                        <!-- Hojas Verdes -->
+                        <g fill="#16a34a" stroke="#14532d" stroke-width="1.5">
+                            <path d="M125 240 C90 230 65 205 60 180 C80 185 105 205 125 235 Z" fill="#15803d"/>
+                            <path d="M175 240 C210 230 235 205 240 180 C220 185 195 205 175 235 Z" fill="#15803d"/>
+                            <path d="M110 190 C65 170 45 130 40 100 C70 110 100 140 115 180 Z"/>
+                            <path d="M190 190 C235 170 255 130 260 100 C230 110 200 140 185 180 Z"/>
+                        </g>
+
+                        <!-- Girasol Izquierdo -->
+                        <g transform="translate(95, 150) scale(0.72)">
+                            <g fill="url(#bSunPetal2)">
+                                <ellipse cx="0" cy="-60" rx="14" ry="34"/>
+                                <ellipse cx="42" cy="-42" rx="14" ry="34" transform="rotate(45 42 -42)"/>
+                                <ellipse cx="60" cy="0" rx="14" ry="34" transform="rotate(90 60 0)"/>
+                                <ellipse cx="42" cy="42" rx="14" ry="34" transform="rotate(135 42 42)"/>
+                                <ellipse cx="0" cy="60" rx="14" ry="34" transform="rotate(180 0 60)"/>
+                                <ellipse cx="-42" cy="42" rx="14" ry="34" transform="rotate(225 -42 42)"/>
+                                <ellipse cx="-60" cy="0" rx="14" ry="34" transform="rotate(270 -60 0)"/>
+                                <ellipse cx="-42" cy="-42" rx="14" ry="34" transform="rotate(315 -42 -42)"/>
+                            </g>
+                            <g fill="url(#bSunPetal1)" transform="rotate(22.5)">
+                                <ellipse cx="0" cy="-52" rx="12" ry="28"/>
+                                <ellipse cx="37" cy="-37" rx="12" ry="28" transform="rotate(45 37 -37)"/>
+                                <ellipse cx="52" cy="0" rx="12" ry="28" transform="rotate(90 52 0)"/>
+                                <ellipse cx="37" cy="37" rx="12" ry="28" transform="rotate(135 37 37)"/>
+                                <ellipse cx="0" cy="52" rx="12" ry="28" transform="rotate(180 0 52)"/>
+                                <ellipse cx="-37" cy="37" rx="12" ry="28" transform="rotate(225 -37 37)"/>
+                                <ellipse cx="-52" cy="0" rx="12" ry="28" transform="rotate(270 -52 0)"/>
+                                <ellipse cx="-37" cy="-37" rx="12" ry="28" transform="rotate(315 -37 -37)"/>
+                            </g>
+                            <circle cx="0" cy="0" r="30" fill="url(#bSunCore)"/>
+                            <circle cx="0" cy="0" r="26" fill="none" stroke="#d97706" stroke-dasharray="3,3" stroke-width="2"/>
+                        </g>
+
+                        <!-- Girasol Derecho -->
+                        <g transform="translate(205, 150) scale(0.72)">
+                            <g fill="url(#bSunPetal2)">
+                                <ellipse cx="0" cy="-60" rx="14" ry="34"/>
+                                <ellipse cx="42" cy="-42" rx="14" ry="34" transform="rotate(45 42 -42)"/>
+                                <ellipse cx="60" cy="0" rx="14" ry="34" transform="rotate(90 60 0)"/>
+                                <ellipse cx="42" cy="42" rx="14" ry="34" transform="rotate(135 42 42)"/>
+                                <ellipse cx="0" cy="60" rx="14" ry="34" transform="rotate(180 0 60)"/>
+                                <ellipse cx="-42" cy="42" rx="14" ry="34" transform="rotate(225 -42 42)"/>
+                                <ellipse cx="-60" cy="0" rx="14" ry="34" transform="rotate(270 -60 0)"/>
+                                <ellipse cx="-42" cy="-42" rx="14" ry="34" transform="rotate(315 -42 -42)"/>
+                            </g>
+                            <g fill="url(#bSunPetal1)" transform="rotate(22.5)">
+                                <ellipse cx="0" cy="-52" rx="12" ry="28"/>
+                                <ellipse cx="37" cy="-37" rx="12" ry="28" transform="rotate(45 37 -37)"/>
+                                <ellipse cx="52" cy="0" rx="12" ry="28" transform="rotate(90 52 0)"/>
+                                <ellipse cx="37" cy="37" rx="12" ry="28" transform="rotate(135 37 37)"/>
+                                <ellipse cx="0" cy="52" rx="12" ry="28" transform="rotate(180 0 52)"/>
+                                <ellipse cx="-37" cy="37" rx="12" ry="28" transform="rotate(225 -37 37)"/>
+                                <ellipse cx="-52" cy="0" rx="12" ry="28" transform="rotate(270 -52 0)"/>
+                                <ellipse cx="-37" cy="-37" rx="12" ry="28" transform="rotate(315 -37 -37)"/>
+                            </g>
+                            <circle cx="0" cy="0" r="30" fill="url(#bSunCore)"/>
+                            <circle cx="0" cy="0" r="26" fill="none" stroke="#d97706" stroke-dasharray="3,3" stroke-width="2"/>
+                        </g>
+
+                        <!-- Girasol Principal Central -->
+                        <g transform="translate(150, 105) scale(0.96)">
+                            <g fill="url(#bSunPetal2)">
+                                <ellipse cx="0" cy="-65" rx="16" ry="38"/>
+                                <ellipse cx="46" cy="-46" rx="16" ry="38" transform="rotate(45 46 -46)"/>
+                                <ellipse cx="65" cy="0" rx="16" ry="38" transform="rotate(90 65 0)"/>
+                                <ellipse cx="46" cy="46" rx="16" ry="38" transform="rotate(135 46 46)"/>
+                                <ellipse cx="0" cy="65" rx="16" ry="38" transform="rotate(180 0 65)"/>
+                                <ellipse cx="-46" cy="46" rx="16" ry="38" transform="rotate(225 -46 46)"/>
+                                <ellipse cx="-65" cy="0" rx="16" ry="38" transform="rotate(270 -65 0)"/>
+                                <ellipse cx="-46" cy="-46" rx="16" ry="38" transform="rotate(315 -46 -46)"/>
+                            </g>
+                            <g fill="url(#bSunPetal1)" transform="rotate(22.5)">
+                                <ellipse cx="0" cy="-58" rx="14" ry="34"/>
+                                <ellipse cx="41" cy="-41" rx="14" ry="34" transform="rotate(45 41 -41)"/>
+                                <ellipse cx="58" cy="0" rx="14" ry="34" transform="rotate(90 58 0)"/>
+                                <ellipse cx="41" cy="41" rx="14" ry="34" transform="rotate(135 41 41)"/>
+                                <ellipse cx="0" cy="58" rx="14" ry="34" transform="rotate(180 0 58)"/>
+                                <ellipse cx="-41" cy="41" rx="14" ry="34" transform="rotate(225 -41 41)"/>
+                                <ellipse cx="-58" cy="0" rx="14" ry="34" transform="rotate(270 -58 0)"/>
+                                <ellipse cx="-41" cy="-41" rx="14" ry="34" transform="rotate(315 -41 -41)"/>
+                            </g>
+                            <circle cx="0" cy="0" r="35" fill="url(#bSunCore)"/>
+                            <circle cx="0" cy="0" r="30" fill="none" stroke="#d97706" stroke-dasharray="4,3" stroke-width="2.5"/>
+                            <circle cx="0" cy="0" r="20" fill="none" stroke="#ca8a04" stroke-dasharray="3,3" stroke-width="2"/>
+                        </g>
+
+                        <!-- Lazo Dorado con Moño -->
+                        <g transform="translate(150, 260)">
+                            <path d="M-10 10 C-30 40 -50 70 -55 95 C-45 90 -30 85 -20 65 Z" fill="url(#bRibbonGrad)"/>
+                            <path d="M10 10 C30 40 50 70 55 95 C45 90 30 85 20 65 Z" fill="url(#bRibbonGrad)"/>
+                            <path d="M0 0 C-40 -25 -70 5 -45 25 C-25 35 -10 15 0 5 Z" fill="url(#bRibbonGrad)" stroke="#a16207" stroke-width="1.2"/>
+                            <path d="M0 0 C40 -25 70 5 45 25 C25 35 10 15 0 5 Z" fill="url(#bRibbonGrad)" stroke="#a16207" stroke-width="1.2"/>
+                            <ellipse cx="0" cy="5" rx="11" ry="9" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Sobre Kraft con Sello de Lacre a la Derecha -->
+            <div class="order-1 lg:order-2 flex flex-col items-center relative z-50">
+                
+                <!-- Caja del Sobre Kraft -->
+                <div id="envelopeClickTarget" onclick="window.abrirCarta(event)" class="relative w-[310px] sm:w-[390px] md:w-[440px] h-[210px] sm:h-[265px] md:h-[295px] envelope-box rounded-xl overflow-visible border border-[#b89569] shadow-2xl cursor-pointer pointer-events-auto" style="z-index: 9999 !important;">
+                    
+                    <!-- Capas decorativas del sobre -->
+                    <div class="absolute inset-y-0 left-0 w-1/2 pointer-events-none z-10" style="background: linear-gradient(115deg, #d8bc93 0%, #ecd4b2 100%); clip-path: polygon(0 0, 100% 50%, 0 100%); filter: drop-shadow(2px 0 3px rgba(0,0,0,0.18)); border-right: 1px solid rgba(139, 94, 59, 0.3);"></div>
+                    <div class="absolute inset-y-0 right-0 w-1/2 pointer-events-none z-10" style="background: linear-gradient(245deg, #d8bc93 0%, #ebd3b1 100%); clip-path: polygon(100% 0, 0 50%, 100% 100%); filter: drop-shadow(-2px 0 3px rgba(0,0,0,0.18)); border-left: 1px solid rgba(139, 94, 59, 0.3);"></div>
+                    <div class="absolute inset-x-0 bottom-0 h-[60%] pointer-events-none z-15" style="background: linear-gradient(0deg, #cfb186 0%, #e8cfad 100%); clip-path: polygon(0 100%, 50% 0, 100% 100%); filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.15)); border-top: 1px solid rgba(139, 94, 59, 0.25);"></div>
+                    
+                    <!-- Solapa Superior 3D -->
+                    <div id="envelopeTopFlap" class="envelope-top-flap absolute inset-x-0 top-0 h-[62%] pointer-events-none z-20" style="background: linear-gradient(180deg, #ecd3b0 0%, #dec29b 80%, #cca97e 100%); clip-path: polygon(0 0, 100% 0, 50% 100%); filter: drop-shadow(0 5px 7px rgba(0,0,0,0.25)); border-bottom: 1px solid rgba(139, 94, 59, 0.35);"></div>
+
+                    <!-- Líneas Diagonales del Sobre -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none z-18 opacity-40" xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="50%" y2="50%" stroke="#7c542b" stroke-width="1.2"/>
+                        <line x1="100%" y1="0" x2="50%" y2="50%" stroke="#7c542b" stroke-width="1.2"/>
+                        <line x1="0" y1="100%" x2="50%" y2="50%" stroke="#7c542b" stroke-width="1.2"/>
+                        <line x1="100%" y1="100%" x2="50%" y2="50%" stroke="#7c542b" stroke-width="1.2"/>
+                    </svg>
+
+                    <!-- Sello de Lacre Rojo en el Centro con Corazón -->
+                    <div class="wax-seal-container flex items-center justify-center pointer-events-auto">
+                        <button id="waxSealButton" type="button"  aria-label="Abrir carta presionando el sello" class="wax-seal-btn wax-seal-pulse relative pointer-events-auto cursor-pointer group" title="Toca el sello para abrir la carta">
+                            <div class="w-14 h-14 rounded-full border border-rose-950/70 flex items-center justify-center pointer-events-none shadow-inner">
+                                <div class="w-10 h-10 rounded-full border border-amber-300/40 flex items-center justify-center pointer-events-none">
+                                    <svg class="w-6 h-6 text-pink-200 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Título Romántico Debajo de la Carta -->
+                <div class="mt-6 text-center pointer-events-none">
+                    <h1 class="font-cursive text-4xl sm:text-6xl md:text-7xl text-amber-300 gold-glow tracking-wide drop-shadow-lg">
+                        Para el amor de mi vida
+                    </h1>
+                    <p class="text-amber-200/70 text-xs sm:text-sm font-light mt-1 tracking-wider">
+                        Un detalle eterno en este 21 de septiembre
+                    </p>
+                </div>
+                <!-- Botón Visible para Abrir Carta -->
+                <div class="mt-5 flex items-center justify-center pointer-events-auto">
+                    <button id="openLetterBtn" type="button" onclick="window.abrirCarta(event)" class="relative z-50 flex items-center gap-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-95 text-slate-950 font-bold text-xs sm:text-sm px-6 sm:px-8 py-2.5 sm:py-3 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.55)] border-2 border-yellow-200/80 transition-all duration-300 cursor-pointer pointer-events-auto group animate-pulse" title="Presiona para abrir la carta">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="tracking-wider uppercase font-extrabold">Abrir Carta 🌻</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- VISTA DEL UNIVERSO 3D Y CARTA DE DEDICATORIA -->
+    <div id="universeView" class="fixed inset-0 z-30 pointer-events-none opacity-0 transition-opacity duration-700 flex flex-col justify-between p-4 sm:p-8">
+        
+        <!-- Controles Superiores del Universo -->
+        <div class="w-full flex justify-between items-center pointer-events-auto z-40">
+            <div class="bg-slate-900/85 backdrop-blur-md px-3.5 sm:px-4 py-1.5 rounded-full border border-yellow-400/40 text-yellow-300 text-[11px] sm:text-xs flex items-center gap-2 shadow-lg">
+                <span class="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
+                <span class="hidden sm:inline">Arrastra en 360° • Rueda o pellizca para zoom</span>
+                <span class="sm:hidden">360° + Zoom</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- Controles de Zoom in / Zoom out -->
+                <div class="flex items-center bg-slate-900/85 backdrop-blur-md border border-yellow-400/40 rounded-full p-0.5 shadow-lg text-yellow-300">
+                    <button id="zoomOutBtn" type="button" onclick="window.ajustarZoom(40)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-yellow-400/20 active:scale-90 transition text-base font-bold cursor-pointer" title="Alejar universo (−)">
+                        −
+                    </button>
+                    <span class="text-[9px] font-semibold text-yellow-200/80 px-1 select-none">ZOOM</span>
+                    <button id="zoomInBtn" type="button" onclick="window.ajustarZoom(-40)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-yellow-400/20 active:scale-90 transition text-base font-bold cursor-pointer" title="Acercar universo (+)">
+                        +
+                    </button>
+                </div>
+
+                <!-- Botón de Centrar Carta -->
+                <button id="centerCardBtn" type="button" onclick="window.centrarCarta(event)" class="bg-slate-900/85 hover:bg-slate-800 active:scale-95 text-yellow-300 text-xs px-3.5 py-2 rounded-full border border-yellow-400/40 shadow-lg backdrop-blur-md transition flex items-center gap-1.5 cursor-pointer" title="Centrar carta y resetear zoom">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Centrar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Carta de Pergamino 3D -->
+        <div class="my-auto mx-auto w-full max-w-xl card-perspective pointer-events-auto flex items-center justify-center z-30">
+            <div id="parchmentCard" class="parchment-sheet w-full rounded-3xl p-6 sm:p-10 text-slate-900 shadow-[0_35px_95px_rgba(0,0,0,0.95)] border-2 border-amber-300 relative cursor-grab active:cursor-grabbing">
+                
+                <!-- Adornos Vintage -->
+                <div class="absolute top-4 left-5 text-amber-700/40 text-xl font-serif select-none pointer-events-none">❦</div>
+                <div class="absolute top-4 right-5 text-amber-700/40 text-xl font-serif select-none pointer-events-none">❦</div>
+                <div class="absolute bottom-4 left-5 text-amber-700/40 text-xl font-serif select-none pointer-events-none">❧</div>
+                <div class="absolute bottom-4 right-5 text-amber-700/40 text-xl font-serif select-none pointer-events-none">❦</div>
+
+                <!-- Marco de Foto Personalizada -->
+                <div class="flex flex-col items-center justify-center mb-2">
+                    <input type="file" id="cardPhotoInput" accept="image/*" class="hidden" onchange="window.cargarFotoCarta(event)">
+                    
+                    <!-- Marco de Foto Fija Decorativa (Sin opción de cambiar/subir) -->
+                    <div class="flex flex-col items-center justify-center mb-2 select-none pointer-events-none">
+                        <div class="w-20 h-20 sm:w-28 sm:h-28 rounded-2xl p-1 bg-gradient-to-tr from-amber-500 via-yellow-200 to-amber-600 shadow-md border border-amber-300">
+                            <img id="cardPhotoImg" src="Kim.jpeg" alt="Kim" class="w-full h-full object-cover rounded-xl shadow-inner">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Encabezado de la Carta -->
+                <div class="text-center mb-3">
+                    <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-400/20 border border-amber-500/30 text-amber-600 mb-0.5 shadow-inner">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C11.5 2 11 2.5 11 3v2.09C8.36 5.56 6.36 7.56 5.09 10.2A4.98 4.98 0 002 12c0 2.76 2.24 5 5 5h.09c.47 2.64 2.47 4.64 5.11 5.91V21c0 .55.5 1 1 1s1-.45 1-1v-2.09c2.64-1.27 4.64-3.27 5.91-5.91H20c2.76 0 5-2.24 5-5 0-2.31-1.57-4.24-3.69-4.81-1.27-2.64-3.27-4.64-5.91-5.91V3c0-.5-.5-1-1-1zm0 6a4 4 0 110 8 4 4 0 010-8z"/>
+                        </svg>
+                    </div>
+                    <span class="text-[10px] sm:text-xs tracking-widest text-amber-800 uppercase font-bold block">Día de las Flores Amarillas</span>
+                    <h2 class="font-cursive text-3xl sm:text-5xl text-amber-950 mt-1 leading-tight">
+                        Para <span>Mi Amor Eterno</span>
+                    </h2>
+                </div>
+
+                <!-- Contenido de la Dedicatoria -->
+                <div id="letterContentContainer" class="space-y-3 sm:space-y-4 text-amber-950/90 text-xs sm:text-sm md:text-base leading-relaxed text-center px-2 sm:px-4">
+                    <p id="letterPara1">
+                        Dicen que regalar <strong class="text-amber-900 font-bold">flores amarillas</strong> en este día no es solo una bella tradición, sino la promesa sincera de entregarte luz, felicidad eterna y un amor que florece en cada rincón de este universo.
+                    </p>
+                    <div class="py-2.5 px-4 rounded-2xl bg-amber-500/10 border border-amber-400/30 shadow-sm">
+                        <p id="letterQuote" class="font-serif-title italic text-sm sm:text-base text-amber-900">
+                            "Así como cada girasol persigue incansablemente el sol, mi corazón siempre encontrará su camino hacia ti."
+                        </p>
+                    </div>
+                    <p id="letterPara2">
+                        Que este manto cósmico de girasoles y estrellas te recuerde hoy y siempre lo extraordinariamente especial y única que eres para mí.
+                    </p>
+                </div>
+
+                <!-- Pie de Carta y Botón Cerrar Carta -->
+                <div class="mt-5 pt-3 border-t border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-3 relative">
+                    <div class="text-center sm:text-left">
+                        <span class="text-[11px] text-amber-800 uppercase tracking-wider block">Con amor infinito,</span>
+                        <span id="displayFromName" class="font-handwriting text-2xl sm:text-3xl text-amber-950 font-bold">Por siempre tu amor Anderson </span>
+                    </div>
+
+                    <!-- Botón Cerrar Carta -->
+                    <button id="closeLetterButton" type="button" onclick="window.cerrarCarta(event)" class="relative z-50 flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 active:scale-95 text-slate-950 text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full shadow-lg border border-amber-600/30 transition transform cursor-pointer pointer-events-auto">
+                        <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>Cerrar Carta</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Indicador de Navegación Inferior -->
+        <div class="text-center text-yellow-200/70 text-[11px] sm:text-xs z-30">
+            ✨ Usa los botones [− / +], la rueda del ratón o pellizca la pantalla para acercar/alejar
+        </div>
+
+    </div>
+
+    <!-- Notificación Toast Flotante -->
+    <div id="appToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-slate-900/95 border border-amber-400/50 text-amber-200 text-xs font-semibold shadow-2xl backdrop-blur-md transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+        <span id="toastIcon">✨</span>
+        <span id="toastMessage">Acción completada</span>
+    </div>
+
+    <!-- Script de lógica JavaScript externo -->
+    <script src="script.js"></script>
+</body>
+</html>
